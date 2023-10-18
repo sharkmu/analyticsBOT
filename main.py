@@ -9,14 +9,9 @@ TOKEN = os.getenv('TOKEN')
 class Bot(commands.Bot):
     async def setup_hook(self):
         print("Bot is starting")
-
+        
         for extension in EXTENSIONS:
             await bot.load_extension(extension)
-        try:
-            synced = await bot.tree.sync()
-            print(f"Synced {len(synced)} command(s)")
-        except Exception as e:
-            print(e)
 
 intents = discord.Intents.default()
 intents.message_content = True
