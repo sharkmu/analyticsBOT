@@ -1,14 +1,17 @@
 import discord
 from discord.ext import commands
 import os
+from pkgutil import iter_modules
 
+EXTENSIONS = [module.name for module in iter_modules(['cogs'], prefix='cogs.')]
 TOKEN = os.getenv('TOKEN')
 
 class Bot(commands.Bot):
     async def setup_hook(self):
         print("Bot is starting")
-        await self.load_extension("cogs.memberCount")
-        await self.load_extension("cogs.bans")
+
+        for extension in EXTENSIONS:
+            await bot.load_extension(extension)
         try:
             synced = await bot.tree.sync()
             print(f"Synced {len(synced)} command(s)")
