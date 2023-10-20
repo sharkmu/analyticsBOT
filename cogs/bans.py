@@ -8,7 +8,7 @@ class bans(commands.Cog):
     async def bans(self, ctx):
         banCount = 0
         async for entry in ctx.guild.bans(limit=None):
-            print(entry.user, entry.reason)
+            #print(entry.user, entry.reason)
             banCount += 1
         await ctx.send(f"Total number of bans: {banCount}")
 

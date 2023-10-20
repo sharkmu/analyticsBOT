@@ -9,7 +9,6 @@ TOKEN = os.getenv('TOKEN')
 class Bot(commands.Bot):
     async def setup_hook(self):
         print("Bot is starting")
-        
         for extension in EXTENSIONS:
             await bot.load_extension(extension)
 
