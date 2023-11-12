@@ -9,6 +9,14 @@ class sql(commands.Cog):
         if message.author == self.bot.user:
             return
         print(f"new message: {message}")
+    
+    @commands.Cog.listener()
+    async def on_member_join(self, member):
+        print(f"new member: {member.name}")
+    
+    @commands.Cog.listener()
+    async def on_member_remove(self, member):
+        print(f"member left: {member.name}")
 
 async def setup(bot: commands.Bot) -> None:
     await bot.add_cog(sql(bot))
