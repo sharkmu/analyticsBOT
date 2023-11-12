@@ -1,4 +1,11 @@
 /env
 .env
+
+# Python
 __pycache__
+
+# Database
+/database/db/*
+
+# Etc
 .vscode
