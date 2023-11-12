@@ -27,6 +27,8 @@ class Database:
     def __init__(self, db_name: str | None, temp_db_name: str = "bot_test_db"):
         cwd = os.getcwd()
 
+        os.makedirs(f"{cwd}/database/db", exist_ok=True)
+
         if db_name == None or db_name == "":
             self.db_path = f"{cwd}/database/db/{temp_db_name}"
         else:
