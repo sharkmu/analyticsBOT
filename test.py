@@ -14,6 +14,12 @@ class DatabaseTest(unittest.TestCase):
         self.assertEqual(db.get_guild(guild_id="1234567890"), Guild(guild_id='1234567890', guild_data=GuildData(
             member_count=0, user_ban_count=0, chat_count=0), user_data=[]))
 
+    def test_delete_guild(self):
+        db = DiscordBotDatabase()
+        is_successful = db.delete_guild(guild_id="1234567890")
+
+        self.assertEqual(is_successful, True)
+
 
 if __name__ == '__main__':
     unittest.main()

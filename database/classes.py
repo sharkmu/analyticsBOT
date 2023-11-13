@@ -127,8 +127,22 @@ class DiscordBotDatabase(Database):
         else:
             return None
 
-    def remove_guild(guild_id: str):
-        pass
+    def delete_guild(self, guild_id: str):
+        con = self.get_connection()
+        cur = con.cursor()
+
+        cur.execute("DELETE FROM guilds WHERE guild_id = ?", (guild_id,))
+        deleted_rows = cur.rowcount
+
+        con.commit()
+        con.close()
+
+        # Return `False` when no rows were deleted.
+        if deleted_rows > 0:
+            return True
+        else:
+            return False
 
     def add_or_update_user(guild_id: str, user_id: str):
+
         pass
