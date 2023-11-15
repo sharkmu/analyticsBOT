@@ -53,7 +53,7 @@ class DiscordBotDatabase(Database):
                     user_ban_count INTEGER, 
                     chat_count INTEGER
                 );
-""")
+        """)
         users = cur.execute("""
             CREATE TABLE IF NOT EXISTS
                 users(
