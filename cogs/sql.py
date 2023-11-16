@@ -6,19 +6,23 @@ class sql(commands.Cog):
         self.bot = bot
         self.db = DiscordBotDatabase()
 
-    def db_add_guild(self, gId: str, guild):
+    async def db_add_guild(self, gId: str, guild):
+        banCount = 0
+        async for i in guild.bans(limit=100000):
+            banCount += 1
+        print(banCount)
         self.db.add_or_update_guild(
             guild_id= gId,
             guild_data=GuildData(
                 member_count=guild.member_count,
-                user_ban_count=0, # TODO
-                chat_count=0, # don't edit this
+                user_ban_count=banCount,
+                chat_count=0,
             )
         )
     
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        self.db_add_guild(guild.id, guild)
+        await self.db_add_guild(guild.id, guild)
 
     @commands.Cog.listener()
     async def on_message(self, message):
