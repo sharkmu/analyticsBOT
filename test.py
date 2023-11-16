@@ -16,7 +16,7 @@ class DatabaseMethodTest(unittest.TestCase):
     def test_2_add_guild(self):
         self.db.add_or_update_guild(
             guild_id="123",
-            guild_data=GuildData(
+            guild_data_arg=GuildData(
                 member_count=32,
                 user_ban_count=4,
                 chat_count=0,
@@ -69,7 +69,7 @@ class DatabaseMethodTest(unittest.TestCase):
         self.db.add_or_update_user(
             guild_id="123",
             user_id="1",
-            user_data=UserData(
+            user_data_arg=UserData(
                 guild_id="123",
                 user_id="1",
                 chat_count=updating_user_data.chat_count + 1

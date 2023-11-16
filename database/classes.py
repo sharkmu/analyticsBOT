@@ -151,26 +151,43 @@ class DiscordBotDatabase(Database):
         else:
             return None
 
-    def add_or_update_guild(self, guild_id: str, guild_data: GuildData = None):
+    def add_or_update_guild(self, guild_id: str, guild_data_arg: GuildData = None):
         con = self.get_connection()
         cur = con.cursor()
 
-        # If guild data is not provided, use default values.
-        using_guild_data = GuildData(
+        existing_guild = self.get_guild(guild_id)
+
+        # Use default value when neither the argument nor the existing guild data has a value.
+        default = GuildData(
             member_count=0,
             user_ban_count=0,
             chat_count=0
         )
-        if guild_data != None:
-            using_guild_data = GuildData(
-                member_count=0 if guild_data.member_count == None else guild_data.member_count,
-                user_ban_count=0 if guild_data.user_ban_count == None else guild_data.user_ban_count,
-                chat_count=0 if guild_data.chat_count == None else guild_data.chat_count
+
+        if existing_guild and existing_guild.guild_data:
+            using_guild_data = existing_guild.guild_data
+        else:
+            using_guild_data = default
+
+        using_guild_data = GuildData(
+            member_count=getattr(
+                guild_data_arg,
+                'member_count',
+                using_guild_data.member_count
+            ),
+            user_ban_count=getattr(
+                guild_data_arg,
+                'user_ban_count',
+                using_guild_data.user_ban_count
+            ),
+            chat_count=getattr(
+                guild_data_arg,
+                'chat_count',
+                using_guild_data.chat_count
             )
+        )
 
         # Update guild data if the guild already exists. Otherwise, add one.
-        existing_guild = self.get_guild(guild_id)
-
         if existing_guild != None:
             cur.execute(
                 """
@@ -208,26 +225,34 @@ class DiscordBotDatabase(Database):
         con.commit()
         con.close()
 
-    def add_or_update_user(self, guild_id: str, user_id: str, user_data: UserData = None):
+    def add_or_update_user(self, guild_id: str, user_id: str, user_data_arg: UserData = None):
         con = self.get_connection()
         cur = con.cursor()
 
+        existing_user_data = self.get_user(guild_id, user_id)
+
         # If user data is not provided, use default values.
-        using_user_data = UserData(
+        default = UserData(
             user_id=user_id,
             guild_id=guild_id,
             chat_count=0
         )
-        if user_data != None:
-            using_user_data = UserData(
-                user_id=user_id,
-                guild_id=guild_id,
-                chat_count=0 if user_data.chat_count == None else user_data.chat_count
+        if existing_user_data:
+            using_user_data = existing_user_data
+        else:
+            using_user_data = default
+
+        using_user_data = UserData(
+            user_id=user_id,
+            guild_id=guild_id,
+            chat_count=getattr(
+                user_data_arg,
+                'chat_count',
+                using_user_data.chat_count
             )
+        )
 
         # Update user data if the user already exists. Otherwise, add one.
-        existing_user_data = self.get_user(guild_id, user_id)
-
         if existing_user_data != None:
             cur.execute(
                 """
