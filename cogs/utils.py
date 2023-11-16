@@ -8,7 +8,7 @@ class utils(commands.Cog):
     async def sync(self, ctx):
         try:
             synced = await self.bot.tree.sync()
-            await ctx.send(f"Succesfully synced {len(synced)} command(s)")
+            await ctx.send(f"Successfully synced {len(synced)} command(s)")
         except Exception as e:
             await ctx.send(f"Error while trying to sync: {e}")
 
