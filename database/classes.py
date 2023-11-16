@@ -163,9 +163,9 @@ class DiscordBotDatabase(Database):
         )
         if guild_data != None:
             using_guild_data = GuildData(
-                member_count=0 if guild_data.member_count == None else guild_data.member_count,
-                user_ban_count=0 if guild_data.user_ban_count == None else guild_data.user_ban_count,
-                chat_count=0 if guild_data.chat_count == None else guild_data.chat_count
+                member_count=guild_data.member_count or using_guild_data.member_count,
+                user_ban_count=guild_data.user_ban_count or using_guild_data.user_ban_count,
+                chat_count=guild_data.chat_count or using_guild_data.chat_count
             )
 
         # Update guild data if the guild already exists. Otherwise, add one.
@@ -222,7 +222,7 @@ class DiscordBotDatabase(Database):
             using_user_data = UserData(
                 user_id=user_id,
                 guild_id=guild_id,
-                chat_count=0 if user_data.chat_count == None else user_data.chat_count
+                chat_count=user_data.chat_count or using_user_data.chat_count
             )
 
         # Update user data if the user already exists. Otherwise, add one.
