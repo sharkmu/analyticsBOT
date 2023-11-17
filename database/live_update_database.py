@@ -38,7 +38,7 @@ class Database:
         self.get_connection = lambda: sqlite3.connect(self.db_path)
 
 
-class DiscordBotDatabase(Database):
+class LiveUpdateDatabase(Database):
     def __init__(self, db_name: str = None):
         super().__init__(db_name)
 

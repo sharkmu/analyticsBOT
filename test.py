@@ -1,5 +1,5 @@
 import unittest
-from database.classes import GuildData, UserData, Guild, DiscordBotDatabase
+from database.base import GuildData, UserData, Guild, DiscordBotDatabase
 import os
 
 # Enter following command to run tests:
