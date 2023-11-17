@@ -39,7 +39,7 @@ class Database:
 
 
 class DiscordBotDatabase(Database):
-    def __init__(self, db_name: str = None):
+    def __init__(self, db_name: str | None): 
         super().__init__(db_name)
 
         con = self.get_connection()
@@ -151,7 +151,7 @@ class DiscordBotDatabase(Database):
         else:
             return None
 
-    def add_or_update_guild(self, guild_id: str, guild_data_arg: GuildData = None):
+    def add_or_update_guild(self, guild_id: str, guild_data_arg: GuildData | None):
         con = self.get_connection()
         cur = con.cursor()
 
@@ -225,7 +225,7 @@ class DiscordBotDatabase(Database):
         con.commit()
         con.close()
 
-    def add_or_update_user(self, guild_id: str, user_id: str, user_data_arg: UserData = None):
+    def add_or_update_user(self, guild_id: str, user_id: str, user_data_arg: UserData | None):
         con = self.get_connection()
         cur = con.cursor()
 
@@ -328,5 +328,5 @@ class DiscordBotDatabase(Database):
 
         if deleted_rows < 1:
             return False
-
+        
         return True
