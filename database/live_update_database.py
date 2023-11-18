@@ -1,33 +1,13 @@
-import sqlite3
-import os
+from database.base import Database
 from dataclasses import dataclass
 
 
 @dataclass
 class GuildData:
-    member_count: int
+    guild_id: str = None
+    member_count: int = 0
     user_ban_count: int = 0
     chat_count: int = 0
-
-
-@dataclass
-class Guild:
-    guild_id: str
-    guild_data: GuildData
-
-
-class Database:
-    def __init__(self, db_name: str | None, temp_db_name: str = "bot_test"):
-        cwd = os.getcwd()
-
-        os.makedirs(f"{cwd}/database/db", exist_ok=True)
-
-        if db_name == None or db_name == "":
-            self.db_path = f"{cwd}/database/db/{temp_db_name}.db"
-        else:
-            self.db_path = f"{cwd}/database/db/{db_name}.db"
-
-        self.get_connection = lambda: sqlite3.connect(self.db_path)
 
 
 class LiveUpdateDatabase(Database):
@@ -55,7 +35,7 @@ class LiveUpdateDatabase(Database):
         if guild == None:
             raise Exception("Could not complete database setup.")
 
-    def get_guild(self, guild_id: str) -> Guild | None:
+    def get_guild(self, guild_id: str) -> GuildData | None:
         con = self.get_connection()
         cur = con.cursor()
 
@@ -75,20 +55,18 @@ class LiveUpdateDatabase(Database):
         con.close()
 
         if guild != None:
-            guild_data = Guild(
+            guild_data = GuildData(
                 guild_id=guild[0],
-                guild_data=GuildData(
-                    member_count=guild[1],
-                    user_ban_count=guild[2],
-                    chat_count=guild[3]
-                ),
+                member_count=guild[1],
+                user_ban_count=guild[2],
+                chat_count=guild[3]
             )
 
             return guild_data
         else:
             return None
 
-    def add_or_update_guild(self, guild_id: str, guild_data_arg: GuildData = None):
+    def add_or_update_guild(self, guild_id: str, guild_data_arg: GuildData | None = None):
         con = self.get_connection()
         cur = con.cursor()
 
@@ -97,6 +75,7 @@ class LiveUpdateDatabase(Database):
         # Use default value when neither the argument
         # nor the existing guild data has a value.
         default = GuildData(
+            guild_id=guild_id,
             member_count=0,
             user_ban_count=0,
             chat_count=0
@@ -108,6 +87,7 @@ class LiveUpdateDatabase(Database):
             using_guild_data = default
 
         using_guild_data = GuildData(
+            guild_id=guild_id,
             member_count=getattr(
                 guild_data_arg,
                 'member_count',
