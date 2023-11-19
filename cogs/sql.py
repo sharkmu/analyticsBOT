@@ -1,10 +1,10 @@
 from discord.ext import commands
-from database.classes import GuildData, UserData, Guild, DiscordBotDatabase
+from database.live_update_database import GuildData, LiveUpdateDatabase
 
 class sql(commands.Cog): 
     def __init__(self, bot: commands.Bot): 
         self.bot = bot
-        self.db = DiscordBotDatabase(None)
+        self.db = LiveUpdateDatabase()
 
     async def db_add_guild(self, gId: str, guild):
         banCount = 0
