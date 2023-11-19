@@ -1,4 +1,7 @@
+# Virtual Environment
 /env
+
+# Environment Variable
 .env
 
 # Python
