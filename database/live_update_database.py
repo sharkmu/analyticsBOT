@@ -4,14 +4,14 @@ from database.base import Database
 
 @dataclass
 class GuildData:
-    guild_id: str = None
+    guild_id: str | None = None
     member_count: int = 0
     user_ban_count: int = 0
     chat_count: int = 0
 
 
 class LiveUpdateDatabase(Database):
-    def __init__(self, db_name: str = None):
+    def __init__(self, db_name: str | None = None):
         super().__init__(db_name)
 
         con = self.get_connection()
