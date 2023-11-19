@@ -15,7 +15,7 @@ class utils(commands.Cog):
     @commands.hybrid_command()
     async def reload(self, ctx, *, cog: str):
         try:
-            self.bot.reload_extension(cog)
+            await self.bot.reload_extension(cog)
             await ctx.send(f"Successfully reloaded {cog}")
         except Exception as e:
             await ctx.send(f"Error while trying to reload: {e}")
