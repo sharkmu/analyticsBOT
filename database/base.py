@@ -8,7 +8,7 @@ class Database:
 
         os.makedirs(f"{cwd}/database/db", exist_ok=True)
 
-        if db_name == None or db_name == "":
+        if db_name is None or db_name == "":
             self.db_path = f"{cwd}/database/db/{temp_db_name}.db"
         else:
             self.db_path = f"{cwd}/database/db/{db_name}.db"
