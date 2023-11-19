@@ -1,13 +1,9 @@
 import discord
 from discord.ext import commands
-from dotenv import load_dotenv
-import os
 from pkgutil import iter_modules
-
-load_dotenv()
+from config import config
 
 EXTENSIONS = [module.name for module in iter_modules(['cogs'], prefix='cogs.')]
-TOKEN = os.getenv('TOKEN')
 
 class Bot(commands.Bot):
     async def setup_hook(self):
@@ -23,4 +19,4 @@ intents.guilds = True
 
 bot = Bot(command_prefix = "?", intents=intents)
 
-bot.run(TOKEN)
+bot.run(config.BOT_TOKEN)
