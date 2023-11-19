@@ -1,5 +1,5 @@
-from database.base import Database
 from dataclasses import dataclass
+from database.base import Database
 
 
 @dataclass
@@ -32,7 +32,7 @@ class LiveUpdateDatabase(Database):
         con.commit()
         con.close()
 
-        if guild == None:
+        if guild is not None:
             raise Exception("Could not complete database setup.")
 
     def get_guild(self, guild_id: str) -> GuildData | None:
@@ -54,7 +54,7 @@ class LiveUpdateDatabase(Database):
         con.commit()
         con.close()
 
-        if guild != None:
+        if guild is not None:
             guild_data = GuildData(
                 guild_id=guild[0],
                 member_count=guild[1],
@@ -81,8 +81,8 @@ class LiveUpdateDatabase(Database):
             chat_count=0
         )
 
-        if existing_guild and existing_guild.guild_data:
-            using_guild_data = existing_guild.guild_data
+        if existing_guild and existing_guild:
+            using_guild_data = existing_guild
         else:
             using_guild_data = default
 
@@ -107,7 +107,7 @@ class LiveUpdateDatabase(Database):
 
         # Update guild data if the guild already exists.
         # Otherwise, add one.
-        if existing_guild != None:
+        if existing_guild is not None:
             cur.execute(
                 """
                     UPDATE
@@ -126,7 +126,7 @@ class LiveUpdateDatabase(Database):
                     guild_id
                 )
             )
-        elif existing_guild == None:
+        elif existing_guild is not None:
             cur.execute(
                 """
                     INSERT INTO
