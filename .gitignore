@@ -6,6 +6,7 @@
 
 # Python
 __pycache__
+config.py
 
 # Database
 /database/db/*
