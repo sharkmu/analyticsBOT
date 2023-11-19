@@ -4,7 +4,7 @@ from database.classes import GuildData, UserData, Guild, DiscordBotDatabase
 class sql(commands.Cog): 
     def __init__(self, bot: commands.Bot): 
         self.bot = bot
-        self.db = DiscordBotDatabase()
+        self.db = DiscordBotDatabase(None)
 
     async def db_add_guild(self, gId: str, guild):
         banCount = 0
@@ -13,7 +13,7 @@ class sql(commands.Cog):
         print(banCount)
         self.db.add_or_update_guild(
             guild_id= gId,
-            guild_data=GuildData(
+            guild_data_arg=GuildData(
                 member_count=guild.member_count,
                 user_ban_count=banCount,
                 chat_count=0,
