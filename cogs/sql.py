@@ -1,10 +1,12 @@
 from discord.ext import commands
 from database.live_update_database import GuildData, LiveUpdateDatabase
+from logic.chat_count import ChatCount
 
 class sql(commands.Cog): 
     def __init__(self, bot: commands.Bot): 
         self.bot = bot
         self.db = LiveUpdateDatabase()
+        self.chat = ChatCount()
 
     async def db_add_guild(self, gId: str, guild):
         banCount = 0
@@ -29,6 +31,7 @@ class sql(commands.Cog):
         if message.author == self.bot.user:
             return
         print(f"new message: {message}")
+        self.chat.updateSum(user=message.author.id)
 
         # test - will remove it
         db_result = self.db.get_guild(guild_id="1162767244808425583")
