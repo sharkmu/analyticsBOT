@@ -32,7 +32,7 @@ class LiveUpdateDatabase(Database):
         con.commit()
         con.close()
 
-        if guild is not None:
+        if guild is None:
             raise Exception("Could not complete database setup.")
 
     def get_guild(self, guild_id: str) -> GuildData | None:
