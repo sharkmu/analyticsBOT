@@ -1,6 +1,7 @@
 from discord.ext import commands
 from database.live_update_database import GuildData, LiveUpdateDatabase
 from logic.chat_count import ChatCount
+import asyncio
 
 class sql(commands.Cog): 
     def __init__(self, bot: commands.Bot): 
@@ -30,13 +31,17 @@ class sql(commands.Cog):
     async def on_message(self, message):
         if message.author == self.bot.user:
             return
-        print(f"new message: {message}")
-        self.chat.updateSum(user=message.author.id)
+        await asyncio.gather(self.chat.updateSum(msg=message.id))
 
+        """ 
         # test - will remove it
         db_result = self.db.get_guild(guild_id="1162767244808425583")
         print(db_result)
         # ---
+
+        content = await message.channel.fetch_message(message.id)
+        print(f"content: {content}")
+        print(f"created at: {content.created_at}")"""
         
     @commands.Cog.listener()
     async def on_member_join(self, member):
