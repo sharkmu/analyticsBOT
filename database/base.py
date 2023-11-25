@@ -1,7 +1,6 @@
 import sqlite3
 import os
 
-
 class Database:
     def __init__(self, db_name: str | None, temp_db_name: str = "bot_test"):
         cwd = os.getcwd()
