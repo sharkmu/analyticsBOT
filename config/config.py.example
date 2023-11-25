@@ -1,1 +1,33 @@
 BOT_TOKEN = ""
+
+# LOCALES
+
+# English
+english = {
+    "TOTAL_BANS_MSG": "Total number of bans: ",
+    "TOTAL_MEMBERS_MSG": "Total number of members: ",
+    "SYNC_COMMANDS_MSG": "Successfully synced this amount of command(s): ",
+    "SYNC_ERROR_MSG": "Error while trying to sync: ",
+    "RELOAD_MSG": "Successfully reloaded: ",
+    "RELOAD_ERROR_MSG": "Error while trying to reload: ",
+}
+
+# Hungarian
+hungarian = {
+    "TOTAL_BANS_MSG": "Összes kitiltás száma: ",
+    "TOTAL_MEMBERS_MSG": "Összes tag száma: ",
+    "SYNC_COMMANDS_MSG": "Sikeresen szinkronizálva lett ennyi parancs: ",
+    "SYNC_ERROR_MSG": "Hiba történt szinkronizálás közben: ",
+    "RELOAD_MSG": "Sikeresen újratöltve: ",
+    "RELOAD_ERROR_MSG": "Hiba történt újratöltés közben: ",
+}
+
+# German - TODO
+german = {
+    "TOTAL_BANS_MSG": "Total number of bans: ",
+    "TOTAL_MEMBERS_MSG": "Total number of members: ",
+    "SYNC_COMMANDS_MSG": "Successfully synced this amount of command(s): ",
+    "SYNC_ERROR_MSG": "Error while trying to sync: ",
+    "RELOAD_MSG": "Successfully reloaded: ",
+    "RELOAD_ERROR_MSG": "Error while trying to reload: ",
+}
