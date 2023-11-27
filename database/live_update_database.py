@@ -29,11 +29,45 @@ class LiveUpdateDatabase(Database):
             """
         )
 
+        language = cur.execute(
+            """
+                CREATE TABLE IF NOT EXISTS
+                    languages (
+                        guild_id TEXT PRIMARY KEY, 
+                        language TEXT
+                    );
+            """
+        )
+
         con.commit()
         con.close()
 
-        if guild is None:
+        if guild and language is None:
             raise Exception("Could not complete database setup.")
+
+    def get_language(self, guild_id: str):
+        con = self.get_connection()
+        cur = con.cursor()
+
+        language = cur.execute(
+            """
+                SELECT
+                    language
+                FROM
+                    languages
+                WHERE
+                    guild_id = ?;
+            """,
+            (guild_id,)
+        ).fetchone()
+
+        con.commit()
+        con.close()
+
+        if language is not None:
+            return language
+        else:
+            return None
 
     def get_guild(self, guild_id: str) -> GuildData | None:
         con = self.get_connection()
@@ -167,3 +201,42 @@ class LiveUpdateDatabase(Database):
             return False
 
         return True
+    
+
+    def update_language(self, guild_id: str, language_data: str):
+        con = self.get_connection()
+        cur = con.cursor()
+
+        guild = self.get_language(guild_id)
+        
+        if guild is None:
+            cur.execute(
+                """
+                    INSERT INTO
+                        languages
+                    VALUES 
+                        (?, ?);
+                """,
+                (
+                    guild_id,
+                    language_data,
+                )
+            )
+        elif guild is not None:
+            cur.execute(
+                """
+                    UPDATE
+                        languages
+                    SET
+                        language = ?
+                    WHERE
+                        guild_id = ?;
+                """,
+                (
+                    language_data,
+                    guild_id,
+                )
+            )
+
+        con.commit()
+        con.close()
