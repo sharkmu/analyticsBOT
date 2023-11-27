@@ -10,24 +10,30 @@ english = {
     "SYNC_ERROR_MSG": "Error while trying to sync: ",
     "RELOAD_MSG": "Successfully reloaded: ",
     "RELOAD_ERROR_MSG": "Error while trying to reload: ",
+    "UPDATE_LANG_MSG": "You successfully updated the language to this: ",
+    "UPDATE_LANG_ERROR_MSG": "Something went wrong, try again later! Error: ",
 }
 
 # Hungarian
-hungarian = {
+magyar = {
     "TOTAL_BANS_MSG": "Összes kitiltás száma: ",
     "TOTAL_MEMBERS_MSG": "Összes tag száma: ",
     "SYNC_COMMANDS_MSG": "Sikeresen szinkronizálva lett ennyi parancs: ",
     "SYNC_ERROR_MSG": "Hiba történt szinkronizálás közben: ",
     "RELOAD_MSG": "Sikeresen újratöltve: ",
     "RELOAD_ERROR_MSG": "Hiba történt újratöltés közben: ",
+    "UPDATE_LANG_MSG": "Sikeresen megváltoztattad a nyelvet erre: ",
+    "UPDATE_LANG_ERROR_MSG": "Valami hiba történt, próbáld meg újra később! Hiba: ",
 }
 
 # German - TODO
-german = {
+deutsch = {
     "TOTAL_BANS_MSG": "Total number of bans: ",
     "TOTAL_MEMBERS_MSG": "Total number of members: ",
     "SYNC_COMMANDS_MSG": "Successfully synced this amount of command(s): ",
     "SYNC_ERROR_MSG": "Error while trying to sync: ",
     "RELOAD_MSG": "Successfully reloaded: ",
     "RELOAD_ERROR_MSG": "Error while trying to reload: ",
+    "UPDATE_LANG_MSG": "You successfully updated the language to this: ",
+    "UPDATE_LANG_ERROR_MSG": "Something went wrong, try again later! Error: ",
 }
