@@ -30,6 +30,13 @@ class sql(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
+        
+        # will remove it 
+        self.db.update_language(message.guild.id, "english")
+        db_result = self.db.get_language(guild_id=str(message.guild.id))
+        # --- 
+        
+        print(db_result)
         if message.author == self.bot.user:
             return
         if isinstance(message.channel, discord.DMChannel):
