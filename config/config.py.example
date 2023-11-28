@@ -1,4 +1,5 @@
 BOT_TOKEN = ""
+OWNER = 012345678910121314
 
 # LOCALES
 
@@ -12,6 +13,7 @@ english = {
     "RELOAD_ERROR_MSG": "Error while trying to reload: ",
     "UPDATE_LANG_MSG": "You successfully updated the language to this: ",
     "UPDATE_LANG_ERROR_MSG": "Something went wrong, try again later! Error: ",
+    "CHECK_FAILURE_MSG": "You do not have access to this command.",
 }
 
 # Hungarian
@@ -24,6 +26,7 @@ magyar = {
     "RELOAD_ERROR_MSG": "Hiba történt újratöltés közben: ",
     "UPDATE_LANG_MSG": "Sikeresen megváltoztattad a nyelvet erre: ",
     "UPDATE_LANG_ERROR_MSG": "Valami hiba történt, próbáld meg újra később! Hiba: ",
+    "CHECK_FAILURE_MSG": "Nincsen hozzáférésed ehhez a parancshoz.",
 }
 
 # German - TODO
@@ -36,4 +39,5 @@ deutsch = {
     "RELOAD_ERROR_MSG": "Error while trying to reload: ",
     "UPDATE_LANG_MSG": "You successfully updated the language to this: ",
     "UPDATE_LANG_ERROR_MSG": "Something went wrong, try again later! Error: ",
+    "CHECK_FAILURE_MSG": "You do not have access to this command.",
 }
