@@ -39,13 +39,45 @@ class LiveUpdateDatabase(Database):
             """
         )
 
+        chat_count_guild = cur.execute(
+            """
+                CREATE TABLE IF NOT EXISTS
+                    chat_count_guild (
+                        guild_id TEXT PRIMARY KEY
+                    );
+            """
+        )
+
+        chat_count_user = cur.execute(
+            """
+                CREATE TABLE IF NOT EXISTS
+                    chat_count_user (
+                        user_id TEXT PRIMARY KEY
+                    );
+            """
+        )
+
+        chat_count_data = cur.execute(
+            """
+                CREATE TABLE IF NOT EXISTS 
+                    chat_count_data (
+                        guild_id TEXT,
+                        user_id TEXT,
+                        data_value TEXT,
+                        FOREIGN KEY(guild_id) REFERENCES chat_count_guild(guild_id),
+                        FOREIGN KEY(user_id) REFERENCES chat_count_user(user_id)
+                    );
+            """
+        )
+
         con.commit()
         con.close()
 
-        if guild and language is None:
+        tables = [guild, language, chat_count_guild, chat_count_user, chat_count_data]
+        if any(table is None for table in tables):
             raise Exception("Could not complete database setup.")
 
-    def get_language(self, guild_id: str):
+    def get_language(self, guild_id: str, update: bool):
         con = self.get_connection()
         cur = con.cursor()
 
@@ -63,11 +95,21 @@ class LiveUpdateDatabase(Database):
 
         con.commit()
         con.close()
-
-        if language is not None:
+        
+        if update:
             return language
         else:
-            return None
+            if language is not None:
+                for i in range(len(language)):
+                    if language[i] is None:
+                        language[i] = "english"
+                return language
+            if language is None:
+                language = ["english"]
+                return language
+            return language
+            
+
 
     def get_guild(self, guild_id: str) -> GuildData | None:
         con = self.get_connection()
@@ -207,7 +249,7 @@ class LiveUpdateDatabase(Database):
         con = self.get_connection()
         cur = con.cursor()
 
-        guild = self.get_language(guild_id)
+        guild = self.get_language(guild_id, True)
         
         if guild is None:
             cur.execute(

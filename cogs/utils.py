@@ -10,7 +10,7 @@ class utils(commands.Cog):
         
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
-        lang = self.db.get_language(str(ctx.guild.id))
+        lang = self.db.get_language(str(ctx.guild.id), False)
         lang_config = getattr(config, lang[0]) #type: ignore
         if isinstance(error, commands.CheckFailure):
             await ctx.send(lang_config["CHECK_FAILURE_MSG"])
@@ -25,7 +25,7 @@ class utils(commands.Cog):
     @commands.hybrid_command()
     @is_me()
     async def sync(self, ctx):
-        lang = self.db.get_language(str(ctx.guild.id))
+        lang = self.db.get_language(str(ctx.guild.id), False)
         lang_config = getattr(config, lang[0]) #type: ignore     
         try:
             synced = await self.bot.tree.sync()
@@ -36,7 +36,7 @@ class utils(commands.Cog):
     @commands.hybrid_command()
     @is_me()
     async def reload(self, ctx, *, cog: str):
-        lang = self.db.get_language(str(ctx.guild.id))
+        lang = self.db.get_language(str(ctx.guild.id), False)
         lang_config = getattr(config, lang[0]) #type: ignore     
         try:
             await self.bot.reload_extension(cog)

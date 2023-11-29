@@ -9,7 +9,7 @@ class bans(commands.Cog):
     
     @commands.hybrid_command()
     async def bans(self, ctx):
-        lang = self.db.get_language(ctx.guild.id)
+        lang = self.db.get_language(ctx.guild.id, False)
         banCount = 0
         async for entry in ctx.guild.bans(limit=None):
             banCount += 1
