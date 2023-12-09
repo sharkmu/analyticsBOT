@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from database.base import Database
+import json
 
 
 @dataclass
@@ -39,24 +40,6 @@ class LiveUpdateDatabase(Database):
             """
         )
 
-        chat_count_guild = cur.execute(
-            """
-                CREATE TABLE IF NOT EXISTS
-                    chat_count_guild (
-                        guild_id TEXT PRIMARY KEY
-                    );
-            """
-        )
-
-        chat_count_user = cur.execute(
-            """
-                CREATE TABLE IF NOT EXISTS
-                    chat_count_user (
-                        user_id TEXT PRIMARY KEY
-                    );
-            """
-        )
-
         chat_count_data = cur.execute(
             """
                 CREATE TABLE IF NOT EXISTS 
@@ -64,8 +47,7 @@ class LiveUpdateDatabase(Database):
                         guild_id TEXT,
                         user_id TEXT,
                         data_value TEXT,
-                        FOREIGN KEY(guild_id) REFERENCES chat_count_guild(guild_id),
-                        FOREIGN KEY(user_id) REFERENCES chat_count_user(user_id)
+                        PRIMARY KEY (guild_id, user_id)
                     );
             """
         )
@@ -73,9 +55,31 @@ class LiveUpdateDatabase(Database):
         con.commit()
         con.close()
 
-        tables = [guild, language, chat_count_guild, chat_count_user, chat_count_data]
+        tables = [guild, language, chat_count_data]
         if any(table is None for table in tables):
             raise Exception("Could not complete database setup.")
+    
+    def get_chat_count(self, guild_id, user_id):
+        con = self.get_connection()
+        cur = con.cursor()
+
+        chat_count = cur.execute(
+            """
+                SELECT
+                    data_value
+                FROM
+                    chat_count_data
+                WHERE
+                    guild_id = ? AND user_id = ?;
+            """,
+            (guild_id, user_id,)
+        ).fetchone()
+
+        con.commit()
+        con.close()
+
+        return chat_count
+
 
     def get_language(self, guild_id: str, update: bool):
         con = self.get_connection()
@@ -244,6 +248,54 @@ class LiveUpdateDatabase(Database):
 
         return True
     
+    def update_chat_count(self, guild_id: str, user_id: str, chat_count_data: str):
+        con = self.get_connection()
+        cur = con.cursor()
+
+        data = self.get_chat_count(guild_id, user_id)
+
+        if data is None:
+            chat_count_data_list = [chat_count_data]
+        else:
+            chat_count_data_list = json.loads(data[0])
+            chat_count_data_list.append(chat_count_data)
+
+        chat_count_data_json = json.dumps(chat_count_data_list)
+
+        if data is None:
+            cur.execute(
+                """
+                    INSERT INTO
+                        chat_count_data
+                    VALUES 
+                        (?, ?, ?);
+                """,
+                (
+                    guild_id,
+                    user_id,
+                    chat_count_data_json,
+                )
+            )
+        else:
+            cur.execute(
+                """
+                    UPDATE
+                        chat_count_data
+                    SET
+                        data_value = ?
+                    WHERE
+                        guild_id = ? AND user_id = ?;
+                """,
+                (
+                    chat_count_data_json,
+                    guild_id,
+                    user_id,
+                )
+            )
+        con.commit()
+        con.close()
+
+
 
     def update_language(self, guild_id: str, language_data: str):
         con = self.get_connection()
