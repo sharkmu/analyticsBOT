@@ -12,7 +12,7 @@ class sql(commands.Cog):
 
     async def db_add_guild(self, gId: str, guild):
         banCount = 0
-        async for i in guild.bans(limit=100000):
+        async for i in guild.bans(limit=10000):
             banCount += 1
         print(banCount)
         self.db.add_or_update_guild(
