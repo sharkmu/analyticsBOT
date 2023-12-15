@@ -31,7 +31,7 @@ class sql(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        print(self.db.get_chat_count(str(message.guild.id), str(message.author.id)))
+        print(self.db.get_chat_count(str(message.guild.id), str(message.author.id))) # will remove it
         if message.author == self.bot.user:
             return
         if isinstance(message.channel, discord.DMChannel):
