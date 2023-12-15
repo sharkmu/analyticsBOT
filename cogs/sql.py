@@ -30,7 +30,6 @@ class sql(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        self.db.update_chat_count(str(message.guild.id), str(message.author.id), str(message.created_at))
         print(self.db.get_chat_count(str(message.guild.id), str(message.author.id)))
         if message.author == self.bot.user:
             return

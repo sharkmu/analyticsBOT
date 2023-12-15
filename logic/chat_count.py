@@ -1,35 +1,42 @@
 import asyncio
+from database.live_update_database import LiveUpdateDatabase
 
 class ChatCount:
     def __init__(self):
-        self.guilds = {}
+        self.task = None
         self.messages = {}
         self.i = 0
-        self.count = {}
+        self.db = LiveUpdateDatabase()
+        self.data = {}
 
     async def updateSum(self, gId: int, aId: int, mId: int, tDate: str):
-        if gId not in self.guilds:
-            self.guilds[gId] = {"messageId": None, "update_task": None}
-        if gId not in self.count:
-            self.count[gId] = {"index": 0}
-        
-        guild = self.guilds[gId]
-        if guild["update_task"] is not None:
-            guild["update_task"].cancel()
+        if self.task is not None:
+            self.task.cancel()
 
-        self.count[gId]["index"] += 1
-        self.i += 1
-        self.messages[self.i] = {"guildId": gId, "authorId": aId, "timeDate": tDate}
+        if gId not in self.data:
+            self.data[gId] = {}
 
-        guild["messageId"] = mId
-        guild["update_task"] = asyncio.create_task(self.delayed_db_update(gId))
+        if aId not in self.data[gId]:
+            self.data[gId][aId] = []
 
-    async def delayed_db_update(self, gId):
-        if self.count[gId]["index"] >= 5:
-            print(f"TODO: UPDATE DB for {gId}")
-            self.count[gId]["index"] = 0
-            print(self.count)
-            self.guilds[gId]["update_task"].cancel()
+        self.data[gId][aId].append(tDate)
+
+        self.task = asyncio.create_task(self.delayed_task(self.data))
+
+    async def delayed_task(self, datas):
+        if self.i >= 20:
+            self.update_db(datas)
+            self.i = 0
+            self.task.cancel() #type: ignore
+
         await asyncio.sleep(5)
-        print(f"TODO: UPDATE DB for {gId}")
-        self.count[gId]["index"] = 0
+
+        self.update_db(datas)
+        self.i = 0
+    
+    def update_db(self, datas):
+        for gId, aId in datas.items():
+            for aId, messages in aId.items():
+                for message in messages:
+                    self.db.update_chat_count(str(gId), str(aId), str(message))
+                    self.data = {}
