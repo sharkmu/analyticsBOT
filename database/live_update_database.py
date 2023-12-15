@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from database.base import Database
+from config import config
 import json
 
 
@@ -106,10 +107,10 @@ class LiveUpdateDatabase(Database):
             if language is not None:
                 for i in range(len(language)):
                     if language[i] is None:
-                        language[i] = "english"
+                        language[i] = config.DEFAULT_LANGUAGE
                 return language
             if language is None:
-                language = ["english"]
+                language = [config.DEFAULT_LANGUAGE]
                 return language
             return language
             

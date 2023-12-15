@@ -1,6 +1,7 @@
 from discord.ext import commands
 from database.live_update_database import GuildData, LiveUpdateDatabase
 from logic.chat_count import ChatCount
+from config import config
 import asyncio
 import discord
 
@@ -12,7 +13,7 @@ class sql(commands.Cog):
 
     async def db_add_guild(self, gId: str, guild):
         banCount = 0
-        async for i in guild.bans(limit=10000):
+        async for i in guild.bans(limit=config.BAN_COUNT_LIMIT):
             banCount += 1
         print(banCount)
         self.db.add_or_update_guild(

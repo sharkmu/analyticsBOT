@@ -1,5 +1,18 @@
-BOT_TOKEN = ""
-OWNER = 012345678910121314
+# BOT settings
+
+BOT_TOKEN = "" # <-- The token of the BOT
+BOT_PREFIX = "?" # <-- The prefix of the BOT
+OWNER = 012345678910121314 # <-- Use your own User ID
+START_MESSAGE = "Bot is starting"
+
+
+# SCRIPT settings
+
+BAN_COUNT_LIMIT = 10000 # <-- The max amount of limit for looping throught the list of bans (integer)
+DB_NAME = "bot_test" # <-- The name of the database (string)
+DEFAULT_LANGUAGE = "english" # <-- The default language of the BOT. ("english", "magyar", "deutsch")
+MAX_INDEX = 20 # <-- The maximum amount of messages can be send without updating the DB (integer)
+DELAY = 5 # <-- This is the delay in seconds for updating the DB (integer)
 
 # LOCALES
 

@@ -1,5 +1,6 @@
 import asyncio
 from database.live_update_database import LiveUpdateDatabase
+from config import config
 
 class ChatCount:
     def __init__(self):
@@ -24,12 +25,12 @@ class ChatCount:
         self.task = asyncio.create_task(self.delayed_task(self.data))
 
     async def delayed_task(self, datas):
-        if self.i >= 20:
+        if self.i >= config.MAX_INDEX:
             self.update_db(datas)
             self.i = 0
             self.task.cancel() #type: ignore
 
-        await asyncio.sleep(5)
+        await asyncio.sleep(config.DELAY)
 
         self.update_db(datas)
         self.i = 0
