@@ -12,7 +12,7 @@ class sql(commands.Cog):
 
     async def db_add_guild(self, gId: str, guild):
         banCount = 0
-        async for i in guild.bans(limit=100000):
+        async for i in guild.bans(limit=10000):
             banCount += 1
         print(banCount)
         self.db.add_or_update_guild(
@@ -30,7 +30,6 @@ class sql(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        self.db.update_chat_count(str(message.guild.id), str(message.author.id), str(message.created_at))
         print(self.db.get_chat_count(str(message.guild.id), str(message.author.id)))
         if message.author == self.bot.user:
             return
