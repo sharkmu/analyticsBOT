@@ -11,7 +11,7 @@ class bans(commands.Cog):
     async def bans(self, ctx):
         lang = self.db.get_language(ctx.guild.id, False)
         banCount = 0
-        async for entry in ctx.guild.bans(limit=None):
+        async for entry in ctx.guild.bans(limit=config.BAN_COUNT_LIMIT):
             banCount += 1
         lang_config = getattr(config, lang[0]) #type: ignore
         await ctx.send(lang_config["TOTAL_BANS_MSG"] + str(banCount))

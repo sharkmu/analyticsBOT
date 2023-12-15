@@ -7,7 +7,7 @@ EXTENSIONS = [module.name for module in iter_modules(['cogs'], prefix='cogs.')]
 
 class Bot(commands.Bot):
     async def setup_hook(self):
-        print("Bot is starting")
+        print(config.START_MESSAGE)
         
         for extension in EXTENSIONS:
             await bot.load_extension(extension)
@@ -17,6 +17,6 @@ intents.message_content = True
 intents.members = True
 intents.guilds = True
 
-bot = Bot(command_prefix = "?", intents=intents)
+bot = Bot(command_prefix = config.BOT_PREFIX, intents=intents)
 
 bot.run(config.BOT_TOKEN)

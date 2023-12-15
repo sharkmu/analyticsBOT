@@ -1,8 +1,9 @@
 import sqlite3
 import os
+from config import config
 
 class Database:
-    def __init__(self, db_name: str | None, temp_db_name: str = "bot_test"):
+    def __init__(self, db_name: str | None, temp_db_name: str = config.DB_NAME):
         cwd = os.getcwd()
 
         os.makedirs(f"{cwd}/database/db", exist_ok=True)
