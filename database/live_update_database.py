@@ -45,10 +45,8 @@ class LiveUpdateDatabase(Database):
             """
                 CREATE TABLE IF NOT EXISTS 
                     chat_count_data (
-                        guild_id TEXT,
-                        user_id TEXT,
-                        data_value TEXT,
-                        PRIMARY KEY (guild_id, user_id)
+                        guild_id TEXT PRIMARY KEY,
+                        timestamp TEXT
                     );
             """
         )
@@ -60,20 +58,20 @@ class LiveUpdateDatabase(Database):
         if any(table is None for table in tables):
             raise Exception("Could not complete database setup.")
     
-    def get_chat_count(self, guild_id, user_id):
+    def get_chat_count(self, guild_id):
         con = self.get_connection()
         cur = con.cursor()
 
         chat_count = cur.execute(
             """
                 SELECT
-                    data_value
+                    timestamp
                 FROM
                     chat_count_data
                 WHERE
-                    guild_id = ? AND user_id = ?;
+                    guild_id = ?;
             """,
-            (guild_id, user_id,)
+            (guild_id,)
         ).fetchone()
 
         con.commit()
@@ -249,11 +247,13 @@ class LiveUpdateDatabase(Database):
 
         return True
     
-    def update_chat_count(self, guild_id: str, user_id: str, chat_count_data: str):
+    def update_chat_count(self, guild_id: str, chat_count_data: str):
         con = self.get_connection()
         cur = con.cursor()
 
-        data = self.get_chat_count(guild_id, user_id)
+        print("asdasd")
+
+        data = self.get_chat_count(guild_id)
 
         if data is None:
             chat_count_data_list = [chat_count_data]
@@ -263,17 +263,18 @@ class LiveUpdateDatabase(Database):
 
         chat_count_data_json = json.dumps(chat_count_data_list)
 
+        print(chat_count_data_list)
+        print(chat_count_data_json)
         if data is None:
             cur.execute(
                 """
                     INSERT INTO
                         chat_count_data
                     VALUES 
-                        (?, ?, ?);
+                        (?, ?);
                 """,
                 (
                     guild_id,
-                    user_id,
                     chat_count_data_json,
                 )
             )
@@ -283,14 +284,13 @@ class LiveUpdateDatabase(Database):
                     UPDATE
                         chat_count_data
                     SET
-                        data_value = ?
+                        timestamp = ?
                     WHERE
-                        guild_id = ? AND user_id = ?;
+                        guild_id = ?;
                 """,
                 (
                     chat_count_data_json,
                     guild_id,
-                    user_id,
                 )
             )
         con.commit()

@@ -10,17 +10,17 @@ class ChatCount:
         self.db = LiveUpdateDatabase()
         self.data = {}
 
-    async def updateSum(self, gId: int, aId: int, mId: int, tDate: str):
+    async def updateSum(self, gId: int, tDate: str):
         if self.task is not None:
             self.task.cancel()
 
         if gId not in self.data:
             self.data[gId] = {}
 
-        if aId not in self.data[gId]:
-            self.data[gId][aId] = []
+        if tDate not in self.data[gId]:
+            self.data[gId][tDate] = []
 
-        self.data[gId][aId].append(tDate)
+        self.data[gId].append(tDate)
 
         self.task = asyncio.create_task(self.delayed_task(self.data))
 
@@ -39,5 +39,5 @@ class ChatCount:
         for gId, aId in datas.items():
             for aId, messages in aId.items():
                 for message in messages:
-                    self.db.update_chat_count(str(gId), str(aId), str(message))
+                    self.db.update_chat_count(str(gId), str(message))
                     self.data = {}

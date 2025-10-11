@@ -31,7 +31,7 @@ class sql(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        print(self.db.get_chat_count(str(message.guild.id), str(message.author.id))) # will remove it
+        #print(self.db.get_chat_count(str(message.guild.id), str(message.author.id))) # will remove it
         if message.author == self.bot.user:
             return
         if isinstance(message.channel, discord.DMChannel):
@@ -39,7 +39,11 @@ class sql(commands.Cog):
         if message.is_system():
             return
         
-        await asyncio.gather(self.chat.updateSum(message.guild.id, message.author.id, message.id, str(message.created_at)))
+        date = str(message.created_at).split(" ")[0]
+
+        print(date)
+        
+        #await asyncio.gather(self.chat.updateSum(message.guild.id, date))
         
     @commands.Cog.listener()
     async def on_member_join(self, member):
